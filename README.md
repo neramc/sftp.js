@@ -1,248 +1,257 @@
-# SFTP File Manager
+# sftpcli.js
 
 ![library_logo](logo.svg)
 
-A simple and powerful Node.js library for managing file systems on SFTP servers.
+Complete SFTP solution with built-in UI library and CLI tool. Work with remote servers or localhost files seamlessly.
+
+## Features
+
+🚀 **Three Products in One**
+- **Node.js Library** - Programmatic SFTP operations
+- **Web UI Library** - Embeddable file manager (like BlockNote/Xterm.js)
+- **CLI Tool** - Full-screen terminal UI (FileZilla-style)
+
+✨ **Localhost Support** - Use `localhost` as host to work with local files  
+📁 **Complete File Operations** - Upload, download, delete, rename, chmod  
+🎨 **Beautiful Interfaces** - Modern web UI and terminal UI  
+🔒 **Secure** - Password and private key authentication  
+⚡ **Fast** - Efficient file transfers and operations  
+🎯 **TypeScript** - Full type safety
+
+---
 
 ## Installation
 
 ```bash
-npm install sftp.js
+npm install sftpcli.js
 ```
 
-## Basic Usage
+Or use directly via CDN:
 
-### 1. Connect and Basic Operations
+```html
+<link rel="stylesheet" href="https://unpkg.com/sftpcli.js/dist/web/sftpcli.css">
+<script src="https://unpkg.com/sftpcli.js/dist/web/index.js"></script>
+```
+
+---
+
+## Usage
+
+### 1. As Node.js Library
 
 ```javascript
-const SFTPManager = require('sftp-file-manager');
+const { SFTPClient } = require('sftpcli.js');
 
-const sftp = new SFTPManager();
+const client = new SFTPClient();
 
-// Connect with password
-await sftp.connect({
-  host: '192.168.1.100',
+// Connect to remote server
+await client.connect({
+  host: 'example.com',
   port: 22,
-  username: 'ubuntu',
-  password: 'your_password'
+  username: 'user',
+  password: 'pass'
 });
 
-// Or connect with private key
-await sftp.connect({
-  host: '192.168.1.100',
-  port: 22,
-  username: 'ubuntu',
-  privateKey: '/path/to/private_key.pem'
+// Or connect to localhost
+await client.connect({
+  host: 'localhost',
+  username: 'user'
 });
-```
 
-### 2. Upload Files
+// Host with port notation
+await client.connect({
+  host: 'example.com:2222',  // Port automatically parsed
+  username: 'user',
+  password: 'pass'
+});
 
-```javascript
-// Upload single file
-const result = await sftp.uploadFile(
-  './local/file.txt',
-  '/remote/path/file.txt'
-);
-console.log(result.message); // "File uploaded successfully"
-
-// Upload entire directory (recursive)
-await sftp.uploadDirectory(
-  './local/folder',
-  '/remote/folder'
-);
-```
-
-### 3. Download Files
-
-```javascript
-// Download single file
-await sftp.downloadFile(
-  '/remote/path/file.txt',
-  './local/file.txt'
-);
-
-// Download entire directory (recursive)
-await sftp.downloadDirectory(
-  '/remote/folder',
-  './local/folder'
-);
-```
-
-### 4. File and Directory Management
-
-```javascript
 // List files
-const list = await sftp.listFiles('/remote/path');
-console.log(list.files);
+const result = await client.list('/home/user');
+console.log(result.data); // Array of FileInfo
 
-// Check if file exists
-const exists = await sftp.exists('/remote/path/file.txt');
-console.log(exists.exists); // true or false
+// Upload file
+await client.put('./local.txt', '/remote/file.txt');
+
+// Download file
+await client.get('/remote/file.txt', './local.txt');
 
 // Create directory
-await sftp.createDirectory('/remote/new_folder');
+await client.mkdir('/remote/newdir');
 
 // Delete file
-await sftp.deleteFile('/remote/path/file.txt');
+await client.delete('/remote/file.txt');
 
-// Delete directory (recursive)
-await sftp.deleteDirectory('/remote/folder');
+// Rename
+await client.rename('/old.txt', '/new.txt');
 
-// Rename or move file
-await sftp.rename(
-  '/remote/old_name.txt',
-  '/remote/new_name.txt'
-);
-
-// Change file permissions
-await sftp.chmod('/remote/file.txt', 0o755);
-```
-
-### 5. Read and Write File Content
-
-```javascript
 // Read file content
-const result = await sftp.readFile('/remote/file.txt');
-console.log(result.content);
+const content = await client.readFile('/remote/file.txt');
 
 // Write file content
-await sftp.writeFile(
-  '/remote/file.txt',
-  'Hello, World!'
-);
+await client.writeFile('/remote/file.txt', 'Hello World');
+
+// Get stats
+const stats = await client.stat('/remote/file.txt');
+
+// Check existence
+const exists = await client.exists('/remote/file.txt');
+
+// Upload directory recursively
+await client.putDir('./localdir', '/remotedir');
+
+// Download directory recursively
+await client.getDir('/remotedir', './localdir');
+
+// Disconnect
+await client.disconnect();
 ```
 
-### 6. Disconnect
+### 2. As Web UI Library
 
-```javascript
-await sftp.disconnect();
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/sftpcli.js/dist/web/sftpcli.css">
+</head>
+<body>
+  <div id="sftp-container" style="height: 600px;"></div>
+
+  <script src="https://unpkg.com/sftpcli.js/dist/web/index.js"></script>
+  <script>
+    new SFTPCLIWebUI({
+      container: '#sftp-container',
+      apiEndpoint: 'http://localhost:3000/api',
+      theme: 'dark',
+      onReady: () => console.log('Ready!'),
+      onPathChange: (path) => console.log('Path:', path)
+    });
+  </script>
+</body>
+</html>
 ```
 
-## Express.js Backend Example
+#### React Integration
 
-```javascript
-const express = require('express');
-const SFTPManager = require('sftp-file-manager');
+```tsx
+import { useEffect, useRef } from 'react';
+import { WebUI } from 'sftpcli.js/dist/web';
+import 'sftpcli.js/dist/web/sftpcli.css';
 
-const app = express();
-app.use(express.json());
+function SFTPComponent() {
+  const containerRef = useRef(null);
 
-// Create SFTP instance
-const sftp = new SFTPManager();
-
-// File upload endpoint
-app.post('/api/upload', async (req, res) => {
-  try {
-    // Connect to SFTP
-    await sftp.connect({
-      host: process.env.SFTP_HOST,
-      port: 22,
-      username: process.env.SFTP_USERNAME,
-      privateKey: process.env.SFTP_KEY_PATH
+  useEffect(() => {
+    const ui = new WebUI({
+      container: containerRef.current,
+      apiEndpoint: '/api'
     });
 
-    // Upload file
-    const result = await sftp.uploadFile(
-      req.body.localPath,
-      req.body.remotePath
-    );
+    return () => ui.destroy();
+  }, []);
 
-    // Disconnect
-    await sftp.disconnect();
-
-    res.json(result);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// List files endpoint
-app.get('/api/files', async (req, res) => {
-  try {
-    await sftp.connect({
-      host: process.env.SFTP_HOST,
-      port: 22,
-      username: process.env.SFTP_USERNAME,
-      privateKey: process.env.SFTP_KEY_PATH
-    });
-
-    const list = await sftp.listFiles(req.query.path || '/');
-    await sftp.disconnect();
-
-    res.json(list);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-app.listen(3000, () => {
-  console.log('Server running on port 3000');
-});
+  return <div ref={containerRef} style={{ height: '600px' }} />;
+}
 ```
 
-## API Reference
+### 3. As CLI Tool
 
-### `connect(config)`
-Connect to SFTP server.
+```bash
+# Interactive mode (default)
+sftpcli
+sftpcli login
+sftpcli join
 
-**Parameters:**
-- `config.host` (string): Server hostname
-- `config.port` (number): Port number (default: 22)
-- `config.username` (string): Username
-- `config.password` (string): Password (optional)
-- `config.privateKey` (string): Private key path (optional)
-- `config.retries` (number): Number of retry attempts (default: 3)
+# Direct connection
+sftpcli connect -h example.com -u username -w password
+sftpcli connect -h example.com:2222 -u user -k ~/.ssh/id_rsa
 
-### `disconnect()`
-Close SFTP connection.
+# Localhost
+sftpcli connect -h localhost -u user
+```
 
-### `uploadFile(localPath, remotePath)`
-Upload a local file to remote server.
+#### CLI Interface
 
-### `downloadFile(remotePath, localPath)`
-Download a remote file to local system.
+The CLI provides a FileZilla-style full-screen interface:
 
-### `uploadDirectory(localDir, remoteDir)`
-Upload entire local directory to remote server (recursive).
+```
+╔═══════════════════════════════════════════════════════════════════╗
+║  SFTPCLI.JS - user@example.com                                    ║
+╚═══════════════════════════════════════════════════════════════════╝
+┌─ Files ──────────────────────────┬─ Directory Tree ──────────────┐
+│ Type  Name           Size  Date  │ 📁 /                          │
+│ 📁    Documents      ---   12/01 │   └─ 📁 home                  │
+│ 📁    Downloads      ---   12/01 │     └─ 📁 user                │
+│ 📄    file.txt       1.2KB 12/01 │       Folders:                │
+│ 📄    image.png      450KB 12/01 │       ├─ 📁 Documents         │
+│                                   │       ├─ 📁 Downloads         │
+└───────────────────────────────────┴───────────────────────────────┘
+┌─ Console ───────────────────────────────────────────────────────┐
+│ [14:30:22] ✓ Connected to example.com                           │
+│ [14:30:23] • Loading files from: /home/user                     │
+│ [14:30:23] ✓ Loaded 15 items                                    │
+└─────────────────────────────────────────────────────────────────┘
+[↑↓] Navigate | [Enter] Open | [d] Download | [Del] Delete | [q] Quit
+```
 
-### `downloadDirectory(remoteDir, localDir)`
-Download entire remote directory to local system (recursive).
+#### CLI Keyboard Shortcuts
 
-### `deleteFile(remotePath)`
-Delete a remote file.
+- `↑/↓` or `j/k` - Navigate files
+- `Enter` - Open folder
+- `Backspace` or `h` - Go back
+- `d` - Download selected file
+- `u` - Upload file
+- `Delete` - Delete selected item
+- `n` - Create new folder
+- `r` - Rename selected item
+- `f` - Refresh file list
+- `q` or `Ctrl+C` - Quit
 
-### `deleteDirectory(remotePath)`
-Delete a remote directory (recursive).
+---
 
-### `createDirectory(remotePath, recursive)`
-Create a remote directory.
+## Quick Start
 
-### `listFiles(remotePath)`
-List files and directories at remote path.
+### Install globally for CLI
+```bash
+npm install -g sftpcli.js
+sftpcli
+```
 
-### `exists(remotePath)`
-Check if file or directory exists.
+### Install in project
+```bash
+npm install sftpcli.js
+```
 
-### `rename(oldPath, newPath)`
-Rename or move a file.
+### Use in code
+```javascript
+const { SFTPClient } = require('sftpcli.js');
+const client = new SFTPClient();
+await client.connect({ host: 'localhost', username: 'user' });
+await client.list('/');
+```
 
-### `chmod(remotePath, mode)`
-Change file permissions.
+---
 
-### `readFile(remotePath, encoding)`
-Read remote file content.
+## Browser Support
 
-### `writeFile(remotePath, content, encoding)`
-Write content to remote file.
+**Web UI:**
+- Chrome/Edge (latest)
+- Firefox (latest)
+- Safari (latest)
+- Mobile browsers
 
-### `isConnected()`
-Get current connection status.
+**CLI:**
+- Any terminal supporting ANSI escape codes
+- Windows Terminal
+- iTerm2, Terminal.app (macOS)
+- GNOME Terminal, Konsole (Linux)
+
+---
 
 ## License
 
-MIT
+MIT License - see [LICENSE](./LICENSE) file for details.
 
-## Contributing
+---
 
-Issues and pull requests are always welcome!
+**Built with ❤️ for developers who love great tools**
