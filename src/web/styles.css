@@ -1,0 +1,366 @@
+/* sftp.js Web UI Styles */
+
+.sftpjs-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #0f1419;
+  color: #e3e8ef;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.sftpjs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sftpjs-logo {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: -0.5px;
+}
+
+.sftpjs-path {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sftpjs-path-label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+}
+
+.sftpjs-path-value {
+  padding: 4px 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 12px;
+  color: white;
+}
+
+.sftpjs-toolbar {
+  display: flex;
+  gap: 8px;
+  padding: 12px 20px;
+  background: #1a1f2e;
+  border-bottom: 1px solid #2a3142;
+}
+
+.sftpjs-btn {
+  padding: 6px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sftpjs-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.sftpjs-btn-primary {
+  background: #667eea;
+  color: white;
+}
+
+.sftpjs-btn-secondary {
+  background: #3d4453;
+  color: #e3e8ef;
+}
+
+.sftpjs-btn-success {
+  background: #28a745;
+  color: white;
+}
+
+.sftpjs-main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sftpjs-files {
+  flex: 1;
+  overflow: auto;
+  background: #0f1419;
+}
+
+.sftpjs-tree {
+  width: 300px;
+  background: #1a1f2e;
+  border-left: 1px solid #2a3142;
+  overflow: auto;
+}
+
+.sftpjs-tree-title {
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #667eea;
+  border-bottom: 1px solid #2a3142;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sftpjs-tree-content {
+  padding: 12px;
+}
+
+.sftpjs-tree-item {
+  padding: 6px 8px;
+  font-size: 13px;
+  color: #b8c5d0;
+  font-family: 'Monaco', 'Courier New', monospace;
+  line-height: 1.6;
+}
+
+.sftpjs-tree-separator {
+  height: 1px;
+  background: #2a3142;
+  margin: 8px 0;
+}
+
+.sftpjs-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sftpjs-table thead {
+  background: #1a1f2e;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.sftpjs-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  color: #667eea;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #2a3142;
+}
+
+.sftpjs-table td {
+  padding: 10px 16px;
+  font-size: 13px;
+  border-bottom: 1px solid #1a1f2e;
+}
+
+.sftpjs-file-row {
+  transition: background 0.15s ease;
+}
+
+.sftpjs-file-row:hover {
+  background: #1a1f2e;
+}
+
+.sftpjs-folder-btn {
+  background: none;
+  border: none;
+  color: #667eea;
+  cursor: pointer;
+  font-size: 13px;
+  text-decoration: underline;
+  padding: 0;
+  font-family: inherit;
+}
+
+.sftpjs-folder-btn:hover {
+  color: #8796f0;
+}
+
+.sftpjs-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.sftpjs-btn-icon {
+  background: none;
+  border: 1px solid #2a3142;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.sftpjs-btn-icon:hover {
+  background: #1a1f2e;
+  border-color: #667eea;
+}
+
+.sftpjs-btn-danger:hover {
+  background: rgba(220, 53, 69, 0.1);
+  border-color: #dc3545;
+}
+
+.sftpjs-console {
+  height: 160px;
+  background: #0a0e14;
+  border-top: 1px solid #2a3142;
+  display: flex;
+  flex-direction: column;
+}
+
+.sftpjs-console-title {
+  padding: 8px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #ffd700;
+  background: #0a0e14;
+  border-bottom: 1px solid #2a3142;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sftpjs-console-content {
+  flex: 1;
+  overflow: auto;
+  padding: 8px 16px;
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.sftpjs-console-line {
+  color: #b8c5d0;
+  margin-bottom: 4px;
+}
+
+.sftpjs-console-error {
+  color: #ff6b6b;
+}
+
+.sftpjs-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: #667eea;
+  font-size: 14px;
+}
+
+.sftpjs-empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: #6c757d;
+  font-size: 14px;
+}
+
+/* Light theme */
+.sftpjs-container[data-theme='light'] {
+  background: #ffffff;
+  color: #24292e;
+}
+
+.sftpjs-container[data-theme='light'] .sftpjs-toolbar {
+  background: #f6f8fa;
+  border-bottom-color: #e1e4e8;
+}
+
+.sftpjs-container[data-theme='light'] .sftpjs-tree {
+  background: #f6f8fa;
+  border-left-color: #e1e4e8;
+}
+
+.sftpjs-container[data-theme='light'] .sftpjs-files {
+  background: #ffffff;
+}
+
+.sftpjs-container[data-theme='light'] .sftpjs-table thead {
+  background: #f6f8fa;
+}
+
+.sftpjs-container[data-theme='light'] .sftpjs-table th {
+  border-bottom-color: #e1e4e8;
+}
+
+.sftpjs-container[data-theme='light'] .sftpjs-table td {
+  border-bottom-color: #f0f0f0;
+}
+
+.sftpjs-container[data-theme='light'] .sftpjs-file-row:hover {
+  background: #f6f8fa;
+}
+
+.sftpjs-container[data-theme='light'] .sftpjs-console {
+  background: #f6f8fa;
+  border-top-color: #e1e4e8;
+}
+
+.sftpjs-container[data-theme='light'] .sftpjs-console-title {
+  background: #f6f8fa;
+  border-bottom-color: #e1e4e8;
+}
+
+/* Scrollbar styling */
+.sftpjs-files::-webkit-scrollbar,
+.sftpjs-tree::-webkit-scrollbar,
+.sftpjs-console-content::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.sftpjs-files::-webkit-scrollbar-track,
+.sftpjs-tree::-webkit-scrollbar-track,
+.sftpjs-console-content::-webkit-scrollbar-track {
+  background: #0a0e14;
+}
+
+.sftpjs-files::-webkit-scrollbar-thumb,
+.sftpjs-tree::-webkit-scrollbar-thumb,
+.sftpjs-console-content::-webkit-scrollbar-thumb {
+  background: #2a3142;
+  border-radius: 4px;
+}
+
+.sftpjs-files::-webkit-scrollbar-thumb:hover,
+.sftpjs-tree::-webkit-scrollbar-thumb:hover,
+.sftpjs-console-content::-webkit-scrollbar-thumb:hover {
+  background: #3d4453;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sftpjs-main {
+    flex-direction: column;
+  }
+
+  .sftpjs-tree {
+    width: 100%;
+    height: 200px;
+    border-left: none;
+    border-top: 1px solid #2a3142;
+  }
+
+  .sftpjs-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .sftpjs-btn {
+    flex: 1;
+    min-width: 100px;
+  }
+}

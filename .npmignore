@@ -1,0 +1,37 @@
+# Source control
+.git/
+.gitignore
+
+# Testing
+test/
+coverage/
+.nyc_output/
+*.test.js
+
+# Examples
+examples/
+
+# Documentation source
+docs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# CI/CD
+.travis.yml
+.gitlab-ci.yml
+.github/
+
+# Development files
+.env
+.env.*
+*.log
+npm-debug.log*
+
+# Build tools
+.eslintrc
+.prettierrc
+tsconfig.json

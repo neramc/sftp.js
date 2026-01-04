@@ -1,0 +1,70 @@
+{
+  "name": "sftp.js",
+  "version": "1.5.2",
+  "description": "Complete SFTP solution with UI library and CLI tool. Supports localhost operations.",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "sftpjs": "dist/cli/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "rollup -c -w",
+    "build": "rollup -c",
+    "cli": "node dist/cli/index.js",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "sftp",
+    "ssh",
+    "file-manager",
+    "cli",
+    "terminal",
+    "ui",
+    "library",
+    "localhost",
+    "file-transfer",
+    "remote-files",
+    "filezilla",
+    "web-ui"
+  ],
+  "author": "Madmovies <madmovie@icloud.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/neramc/sftp.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/neramc/sftp.js/issues"
+  },
+  "homepage": "https://github.com/neramc/sftp.js#readme",
+  "dependencies": {
+    "ssh2-sftp-client": "^10.0.3",
+    "blessed": "^0.1.81",
+    "commander": "^11.1.0",
+    "inquirer": "^9.2.12",
+    "chalk": "^4.1.2",
+    "figlet": "^1.7.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.5",
+    "@rollup/plugin-json": "^6.1.0",
+    "@types/node": "^20.10.6",
+    "@types/blessed": "^0.1.25",
+    "@types/figlet": "^1.5.8",
+    "rollup": "^4.9.1",
+    "rollup-plugin-css-only": "^4.5.2",
+    "rollup-plugin-terser": "^7.0.2",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
